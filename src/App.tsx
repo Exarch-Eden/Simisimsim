@@ -12,19 +12,18 @@ const canvasCamera: {
     position: Vector3
 } = { position: [0, 0, 10] }
 
-const nodePosition: {
+const mapPosition: {
     position: Vector3
 } = { position: [0, 0, 0] }
 
 function App() {
     return (
         <div className="App">
-            {/* <Map /> */}
             <Canvas className="Canvas" camera={canvasCamera}>
                 <Suspense fallback={null}>
                     <ambientLight />
                     <pointLight position={[10, 10, 10]} />
-                    <Node rest={nodePosition} />
+                    <Map rest={mapPosition} />
                 </Suspense>
             </Canvas>
         </div>

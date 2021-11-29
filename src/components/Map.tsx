@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC, useRef } from 'react'
 
 import Node from './Node'
 import Sector from './Sector'
@@ -7,7 +7,11 @@ import { MAP_DIMENSIONS } from '../constants/map'
 import '../css/Map.css'
 import '../css/Sector.css'
 
-const Map = () => {
+interface MapProps {
+    rest?: JSX.IntrinsicElements['mesh']
+}
+
+const Map: FC<MapProps> = ({ rest }) => {
     const generateNodes = () => {
 
     }
@@ -55,11 +59,12 @@ const Map = () => {
         return nodes;
     }
 
+    const mesh = useRef<THREE.Mesh>(null!)
+
     return (
-        <div className="Map">
-            {/* {renderNodes()} */}
-            {renderSectors()}
-        </div>
+        <mesh {...rest} ref={mesh}>
+            <Node />
+        </mesh>
     )
 }
 
