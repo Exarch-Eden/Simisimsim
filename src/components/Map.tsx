@@ -47,7 +47,13 @@ const Map: FC<MapProps> = ({ rest }) => {
         // TODO: also implement check to kill node generation loop if it cannot find
         // any suitable locations for new nodes anymore
 
-        return [Math.random() * (MAP_DIMENSIONS + 1), Math.random() * (MAP_DIMENSIONS + 1), 0]
+        return [getRandomCoordinate(), getRandomCoordinate(), 0]
+    }
+
+    const getRandomCoordinate = () => {
+        const isPositive = Math.round(Math.random())
+        
+        return Math.random() * (MAP_DIMENSIONS + 1) * (isPositive ? 1 : -1);
     }
 
     return (
