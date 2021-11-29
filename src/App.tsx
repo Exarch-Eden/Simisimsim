@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import * as THREE from 'three'
+import { Canvas, Vector3 } from '@react-three/fiber';
+
 import Map from './components/Map';
+import Node from './components/Node';
+
 import './css/App.css';
+
+const canvasCamera: {
+    position: Vector3
+} = { position: [0, 0, 10] }
+
+const nodePosition: {
+    position: Vector3
+} = { position: [0, 0, 0] }
 
 function App() {
     return (
         <div className="App">
-            <Map />
+            {/* <Map /> */}
+            <Canvas className="Canvas" camera={canvasCamera}>
+                <Suspense fallback={null}>
+                    <ambientLight />
+                    <pointLight position={[10, 10, 10]} />
+                    <Node rest={nodePosition} />
+                </Suspense>
+            </Canvas>
         </div>
     );
 }
