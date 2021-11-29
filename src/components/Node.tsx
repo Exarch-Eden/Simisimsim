@@ -1,9 +1,7 @@
 import React, { FC, useRef } from 'react'
 import * as THREE from 'three'
-import { useFrame, useLoader, Vector3 } from "@react-three/fiber";
-import { Circle, Line } from '@react-three/drei';
 
-import { MAP_DIMENSIONS } from '../constants/map'
+import { OUTLINE_COLOR } from '../constants/colors';
 
 import '../css/Node.css'
 
@@ -11,20 +9,35 @@ interface NodeProps {
     rest?: JSX.IntrinsicElements['mesh']
 }
 
-const OUTLINE_COLOR = '#1f1c1f'
+// the args in order passed as an array of numbers to the ringGeometry element
+type RingGeometryArgs = [
+    innerRadius?: number,
+    outerRadius?: number,
+    thetaSegments?: number,
+    phiSegments?: number,
+    thetaStart?: number,
+    thetaLength?: number,
+]
 
 const Node: FC<NodeProps> = ({
     rest
 }) => {
     const mesh = useRef<THREE.Mesh>(null!)
-    
+
+    // refer to above interface "RingGeometryArgs" for args to pass
+    const ringArgs: RingGeometryArgs = [
+        1,
+        1.1,
+        32
+    ]
+
     return (
         <mesh {...rest} ref={mesh}>
             {/* functioning test: */}
             {/* <circleGeometry args={[1, 32]} />
             <meshBasicMaterial color="orange" /> */}
             {/* testing circle outline: */}
-            <ringGeometry args={[1, 1.1, 32]} />
+            <ringGeometry args={ringArgs} />
             <meshBasicMaterial color={OUTLINE_COLOR} side={THREE.FrontSide} />
         </mesh>
     )
