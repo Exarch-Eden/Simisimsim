@@ -1,3 +1,4 @@
+import { Vector3 } from '@react-three/fiber';
 import React, { FC, useRef } from 'react'
 import * as THREE from 'three'
 
@@ -26,8 +27,8 @@ const Node: FC<NodeProps> = ({
 
     // refer to above interface "RingGeometryArgs" for args to pass
     const ringArgs: RingGeometryArgs = [
-        1,
-        1.1,
+        10,
+        11,
         32
     ]
 
