@@ -7,6 +7,7 @@ import Node from './components/Node';
 
 import './css/App.css';
 
+// the z value is important in scaling the size of objects inside the canvas
 const canvasCamera: {
     position: Vector3
 } = { position: [0, 0, 10] }
