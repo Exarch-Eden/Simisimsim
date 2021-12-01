@@ -41,7 +41,7 @@ const Map: FC<MapProps> = ({ rest }) => {
             const position: Position = { position: randLoc }
 
             localNodes.push(
-                <Node key={i} rest={position} />
+                <Node key={i} id={i} rest={position} />
             )
 
             localNodeData.push({
