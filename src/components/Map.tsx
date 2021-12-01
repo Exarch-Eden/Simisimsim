@@ -1,12 +1,12 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
+import { Vector3 } from '@react-three/fiber'
 
 import Node from './Node'
-import Sector from './Sector'
 import { MAP_DIMENSIONS, MAX_NODES, MIN_NODES } from '../constants/map'
 
 import '../css/Map.css'
 import '../css/Sector.css'
-import { Vector3 } from '@react-three/fiber'
+import { Position } from '../types/generic'
 
 interface MapProps {
     rest?: JSX.IntrinsicElements['mesh']
@@ -14,10 +14,15 @@ interface MapProps {
 
 const Map: FC<MapProps> = ({ rest }) => {
     const mesh = useRef<THREE.Mesh>(null!)
+    // holds the Node elements
+    const [nodes, setNodes] = useState<JSX.Element[]>([])
+    // holds the Node elements' data
+    const [nodeData, setNodeData] = useState([])
 
     // Math.floor(Math.random() * (MAX_ACTIVITIES_TIMER - MIN_ACTIVITIES_TIMER + 1) + MIN_ACTIVITIES_TIMER);
     const generateNodes = () => {
-        const nodes = []
+        const localNodes: JSX.Element[] = []
+
         // the randomly-generated number of nodes the map will have
         const randNum = Math.floor(Math.random() * (MAX_NODES - MIN_NODES + 1) + MIN_NODES)
         console.log('randNum: ', randNum);
@@ -26,20 +31,21 @@ const Map: FC<MapProps> = ({ rest }) => {
             // randomly-generated values in a vector array
             const randLoc = generateNodeLocation()
 
+            // for testing purposes
             if (i % 40 === 0) {
                 console.log('randLoc: ', randLoc);
             }
             
-            const position: {
-                position: Vector3
-            } = { position: randLoc }
+            const position: Position = { position: randLoc }
 
-            nodes.push(
+            localNodes.push(
                 <Node key={i} rest={position} />
             )
         }
 
-        return nodes;
+        setNodes(localNodes)
+
+        return localNodes;
     }
 
     const generateNodeLocation = (): Vector3 => {
@@ -56,10 +62,13 @@ const Map: FC<MapProps> = ({ rest }) => {
         return Math.random() * (MAP_DIMENSIONS + 1) * (isPositive ? 1 : -1);
     }
 
+    useEffect(() => {
+        generateNodes()
+    }, [])
+
     return (
         <mesh {...rest} ref={mesh}>
-            {/* <Node /> */}
-            {generateNodes()}
+            {nodes}
         </mesh>
     )
 }
