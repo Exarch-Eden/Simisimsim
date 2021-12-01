@@ -1,0 +1,9 @@
+const NODE_IN_RADIUS = 10;
+const NODE_OUT_RADIUS = 11;
+const NODE_SEGMENTS = 32;
+
+export {
+    NODE_IN_RADIUS,
+    NODE_OUT_RADIUS,
+    NODE_SEGMENTS,
+}

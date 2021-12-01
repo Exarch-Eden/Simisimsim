@@ -3,6 +3,7 @@ import React, { FC, useRef } from 'react'
 import * as THREE from 'three'
 
 import { OUTLINE_COLOR } from '../constants/colors';
+import { NODE_IN_RADIUS, NODE_OUT_RADIUS, NODE_SEGMENTS } from '../constants/node';
 
 import '../css/Node.css'
 
@@ -27,9 +28,9 @@ const Node: FC<NodeProps> = ({
 
     // refer to above interface "RingGeometryArgs" for args to pass
     const ringArgs: RingGeometryArgs = [
-        10,
-        11,
-        32
+        NODE_IN_RADIUS,
+        NODE_OUT_RADIUS,
+        NODE_SEGMENTS
     ]
 
     return (
