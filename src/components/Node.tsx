@@ -37,14 +37,35 @@ const Node: FC<NodeProps> = ({
         NODE_SEGMENTS
     ]
 
+    // useEffect(() => {
+    //     if (ringRef) {
+    //         // console.log('centering ring geometry');
+    //         if (id && id % 40 === 0) {
+    //             ringRef.current.computeBoundingBox()
+    //             ringRef.current.computeBoundingSphere()
+    //             console.log('box center: ', ringRef.current.boundingBox?.getCenter);
+    //             console.log('sphere center: ', ringRef.current.boundingSphere?.center);
+                
+    //             // const posArr = ringRef.current.attributes.position.array;
+
+    //             // console.log('position: ',
+    //             //     posArr[id]    
+    //             // );
+    //         }
+    //     }
+    // }, [ringRef])
+
+    // retrieves the position of the current node mesh relative to the map
     useEffect(() => {
-        if (ringRef) {
-            // console.log('centering ring geometry');
-            // console.log('position: ',
-            //     ringRef.current.attributes.position
-            // );
+        if (mesh) {
+            if (id && id % 40 === 0) {
+                const meshVector = new THREE.Vector3()
+                meshVector.setFromMatrixPosition(mesh.current.matrixWorld)
+                console.log(`mesh coordinates: [${meshVector.x}, ${meshVector.y}]`);
+            }
         }
-    }, [ringRef])
+        
+    }, [mesh])
 
     return (
         <mesh {...rest} ref={mesh}>
