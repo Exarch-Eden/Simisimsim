@@ -28,16 +28,14 @@ const Node: FC<NodeProps> = ({
     id,
     rest
 }) => {
-    const mesh = useRef<THREE.Mesh>(null!)
-    const ringRef = useRef<THREE.BufferGeometry>(null!)
+    const ringMeshRef = useRef<THREE.Mesh>(null!)
+    const textMeshRef = useRef<THREE.Mesh>(null!)
     const [font, setFont] = useState<Font>()
 
     useEffect(() => {
         const fontLoader = new FontLoader()
 
         fontLoader.load(NODE_FONT_URL, (font) => {
-            console.log('font: \n', font);
-
             setFont(font)
         })
 
@@ -51,35 +49,81 @@ const Node: FC<NodeProps> = ({
         NODE_SEGMENTS
     ]
 
+    const calcMiddle = (boundBox: any) => {
+        if (!boundBox) return;
+
+        return [(boundBox?.max.x + boundBox?.min.x) / 2, boundBox?.min.y]
+    }
+
     // retrieves the position of the current node mesh relative to the map
     useEffect(() => {
-        if (mesh) {
+        if (ringMeshRef) {
             if (id && id % 40 === 0) {
                 const meshVector = new THREE.Vector3()
-                meshVector.setFromMatrixPosition(mesh.current.matrixWorld)
+                meshVector.setFromMatrixPosition(ringMeshRef.current.matrixWorld)
                 console.log(`mesh coordinates: [${meshVector.x}, ${meshVector.y}]`);
             }
         }
 
-    }, [mesh])
+        if (ringMeshRef && textMeshRef) {
+            // const offset = textMeshRef.current.geometry.center()
+
+            // offset.computeBoundingBox()
+            // const boundMax = offset.boundingBox?.max
+            // const boundMin = offset.boundingBox?.min
+            // // console.log('boundMax: ', boundMax);
+            // // console.log('boundMin: ', boundMin);
+
+
+            // if (boundMax && boundMin) {
+            //     const centerVector = new THREE.Vector3(
+            //         boundMax.x,
+            //         boundMax.y,
+            //         0
+            //     )
+
+            //     // console.log('offsetvector: ', centerVector.toArray());
+
+            //     textMeshRef.current.geometry.translate(-centerVector.x, -centerVector.y, 0)
+            // }
+
+
+            // textMeshRef.current.geometry.translate(offset.x, offset.y, 0)
+            if (id && id % 40 === 0) {
+                // console.log('offset: ', offset.attributes.position.array);
+
+
+                // textMeshRef.current.geometry.computeBoundingBox()
+                // const boundBox = textMeshRef.current.geometry.boundingBox;
+                // // ringMeshRef.current.geometry.center()
+                // const calcBox = calcMiddle(boundBox);
+                // console.log('box get center: ', boundBox?.getCenter)
+                // console.log('middle x: ', calcBox ? calcBox[0] : null);
+                // console.log('middle y: ', calcBox ? calcBox[1] : null);
+
+                // textMeshRef.current.position.set()
+            }
+        }
+
+    }, [ringMeshRef, textMeshRef])
 
     // TODO: center the id text (such that it is inside the ring)
     return (
         <group>
-            <mesh {...rest} ref={mesh}>
+            <mesh {...rest} ref={ringMeshRef}>
                 {/* functioning test: */}
                 {/* <circleGeometry args={[1, 32]} />
             <meshBasicMaterial color="orange" /> */}
                 {/* testing circle outline: */}
-                <ringGeometry ref={ringRef} args={ringArgs} />
+                <ringGeometry args={ringArgs} />
                 <meshBasicMaterial color={OUTLINE_COLOR} side={THREE.FrontSide} />
             </mesh>
-            <mesh>
+            <mesh {...rest} ref={textMeshRef}>
                 {
                     font
                         ? (
                             <>
-                                <textGeometry args={['Test', { font: font, size: 8 }]} />
+                                <textGeometry args={[`${id}`, { font: font, size: 8, height: 1 }]} />
                                 <meshBasicMaterial color={OUTLINE_COLOR} side={THREE.FrontSide} />
                             </>
                         )
