@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { Html } from '@react-three/drei';
-import { Vector3 } from '@react-three/fiber';
+import { useFrame, useThree, Vector3 } from '@react-three/fiber';
 import * as THREE from 'three'
 import { Font, FontLoader } from 'three';
 
@@ -30,6 +30,11 @@ const Node: FC<NodeProps> = ({
 }) => {
     const ringMeshRef = useRef<THREE.Mesh>(null!)
     const textMeshRef = useRef<THREE.Mesh>(null!)
+    const groupRef = useRef<JSX.IntrinsicElements>(null!)
+    const [ringVector, setRingVector] = useState<[x: number, y: number]>([0, 0])
+
+    const [ringColor, setRingColor] = useState(OUTLINE_COLOR)
+
     const [font, setFont] = useState<Font>()
 
     useEffect(() => {
@@ -38,6 +43,7 @@ const Node: FC<NodeProps> = ({
         fontLoader.load(NODE_FONT_URL, (font) => {
             setFont(font)
         })
+
 
     }, [])
 
@@ -54,6 +60,15 @@ const Node: FC<NodeProps> = ({
 
         return [(boundBox?.max.x + boundBox?.min.x) / 2, boundBox?.min.y]
     }
+
+    useEffect(() => {
+        if (ringMeshRef) {
+            const newVec = new THREE.Vector3()
+            newVec.setFromMatrixPosition(ringMeshRef.current.matrixWorld)
+            setRingVector([newVec.x, newVec.y])
+        }
+        
+    }, [ringMeshRef])
 
     // retrieves the position of the current node mesh relative to the map
     useEffect(() => {
@@ -107,16 +122,39 @@ const Node: FC<NodeProps> = ({
 
     }, [ringMeshRef, textMeshRef])
 
+    const onMouseOver = () => {
+        setRingColor('#8420c7')
+        console.log('onpointerenter: ', id);
+    }
+
+    const onPointerLeave = () => {
+        setRingColor(OUTLINE_COLOR)
+        console.log('onpointerout: ', id);
+    }
+
+    // useFrame((state) => {
+    //     if (Math.abs((Math.abs(ringVector[0]) - Math.abs(state.mouse.x))) <= NODE_OUT_RADIUS
+    //         && Math.abs(Math.abs(ringVector[1]) - Math.abs(state.mouse.y)) <= NODE_OUT_RADIUS
+    //     ) {
+    //         console.log('intersecting with node: ', id);
+    //     }
+    // })
+
     // TODO: center the id text (such that it is inside the ring)
     return (
-        <group>
+        <group ref={groupRef}>
+            <mesh {...rest}  onPointerOver={onMouseOver} onPointerLeave={onPointerLeave}>
+                <circleGeometry args={[11, 32]} />
+                <meshBasicMaterial transparent opacity={0} />
+            </mesh>
             <mesh {...rest} ref={ringMeshRef}>
                 {/* functioning test: */}
                 {/* <circleGeometry args={[1, 32]} />
             <meshBasicMaterial color="orange" /> */}
                 {/* testing circle outline: */}
                 <ringGeometry args={ringArgs} />
-                <meshBasicMaterial color={OUTLINE_COLOR} side={THREE.FrontSide} />
+
+                <meshBasicMaterial color={ringColor} side={THREE.FrontSide} />
             </mesh>
             <mesh {...rest} ref={textMeshRef}>
                 {
