@@ -5,3 +5,7 @@ export interface Position {
 }
 
 export type Vector3Arr = [x: number, y: number, z: number]
+
+export interface MeshProps {
+    rest?: JSX.IntrinsicElements['mesh']
+}
