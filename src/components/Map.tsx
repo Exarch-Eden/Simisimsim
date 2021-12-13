@@ -6,12 +6,10 @@ import { MAP_DIMENSIONS, MAX_NODES, MIN_NODES } from '../constants/map'
 
 import '../css/Map.css'
 import '../css/Sector.css'
-import { Position, Vector3Arr } from '../types/generic'
+import { MeshProps, Position, Vector3Arr } from '../types/generic'
 import { NodeData } from '../types/node'
 
-interface MapProps {
-    rest?: JSX.IntrinsicElements['mesh']
-}
+interface MapProps extends MeshProps {}
 
 const Map: FC<MapProps> = ({ rest }) => {
     const mesh = useRef<THREE.Mesh>(null!)

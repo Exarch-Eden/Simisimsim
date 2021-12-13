@@ -6,10 +6,10 @@ import { OUTLINE_COLOR } from '../constants/colors';
 import { NODE_CIRC_RADIUS, NODE_CIRC_SEGMENTS, NODE_FONT_URL, NODE_IN_RADIUS, NODE_OUT_RADIUS, NODE_SEGMENTS } from '../constants/node';
 
 import '../css/Node.css'
+import { MeshProps } from '../types/generic';
 
-interface NodeProps {
+interface NodeProps extends MeshProps {
     id?: number
-    rest?: JSX.IntrinsicElements['mesh']
 }
 
 // the args in order passed as an array of numbers to the ringGeometry element
