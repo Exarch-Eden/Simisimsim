@@ -7,6 +7,7 @@ import { NODE_CIRC_RADIUS, NODE_CIRC_SEGMENTS, NODE_FONT_URL, NODE_IN_RADIUS, NO
 
 import '../css/Node.css'
 import { MeshProps } from '../types/generic';
+import GenericRect from './GenericRect';
 
 interface NodeProps extends MeshProps {
     id?: number
@@ -120,6 +121,11 @@ const Node: FC<NodeProps> = ({
                         : null
                 }
             </mesh>
+            {
+                onHover
+                    ? <GenericRect rest={rest} />
+                    : null
+            }
         </group>
 
     )
