@@ -13,8 +13,8 @@ const GenericRect: FC<GenericRectProps> = ({ rest }) => {
 
     return (
         <mesh {...rest} ref={meshRef}>
-            <planeGeometry args={[10, 10]} />
-            <meshBasicMaterial color={OUTLINE_COLOR} side={THREE.FrontSide} />
+            <planeGeometry args={[100, 100]} />
+            <meshBasicMaterial color='white' side={THREE.FrontSide} />
         </mesh>
     )
 }
