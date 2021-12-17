@@ -3,14 +3,18 @@ import * as THREE from 'three'
 import { Font, FontLoader } from 'three';
 
 import { OUTLINE_COLOR } from '../constants/colors';
+import { useAppDispatch } from '../redux/hooks';
+import { setNodeHUDData, setNodeHUDOnHover } from '../redux/reducers/nodeHUDSlice';
 import { NODE_CIRC_RADIUS, NODE_CIRC_SEGMENTS, NODE_FONT_URL, NODE_IN_RADIUS, NODE_OUT_RADIUS, NODE_SEGMENTS } from '../constants/node';
-
-import '../css/Node.css'
 import { MeshProps } from '../types/generic';
 import GenericRect from './GenericRect';
 
+import '../css/Node.css'
+
 interface NodeProps extends MeshProps {
-    id?: number
+    id: number,
+    x: number,
+    y: number
 }
 
 // the args in order passed as an array of numbers to the ringGeometry element
@@ -46,6 +50,8 @@ const circleArgs: CircleGeometryArgs = [
 
 const Node: FC<NodeProps> = ({
     id,
+    x,
+    y,
     rest
 }) => {
     const ringMeshRef = useRef<THREE.Mesh>(null!)
@@ -55,6 +61,7 @@ const Node: FC<NodeProps> = ({
 
     const [ringColor, setRingColor] = useState(OUTLINE_COLOR)
     const [onHover, setOnHover] = useState(false)
+    const dispatch = useAppDispatch()
 
     const [font, setFont] = useState<Font>()
 
@@ -91,11 +98,14 @@ const Node: FC<NodeProps> = ({
         setRingColor('#8420c7')
         setOnHover(true)
         console.log('onpointerenter: ', id);
+        dispatch(setNodeHUDData({ id, x, y }))
+        dispatch(setNodeHUDOnHover(true))
     }
 
     const onPointerLeave = () => {
         setRingColor(OUTLINE_COLOR)
         setOnHover(false)
+        dispatch(setNodeHUDOnHover(false))
         console.log('onpointerout: ', id);
     }
 
@@ -121,11 +131,11 @@ const Node: FC<NodeProps> = ({
                         : null
                 }
             </mesh>
-            {
+            {/* {
                 onHover
                     ? <GenericRect rest={rest} />
                     : null
-            }
+            } */}
         </group>
 
     )

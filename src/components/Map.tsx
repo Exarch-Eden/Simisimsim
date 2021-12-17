@@ -39,7 +39,7 @@ const Map: FC<MapProps> = ({ rest }) => {
             const position: Position = { position: randLoc }
 
             localNodes.push(
-                <Node key={i} id={i} rest={position} />
+                <Node key={i} id={i} x={randLoc[0]} y={randLoc[1]} rest={position} />
             )
 
             localNodeData.push({
@@ -60,7 +60,7 @@ const Map: FC<MapProps> = ({ rest }) => {
         // TODO: also implement check to kill node generation loop if it cannot find
         // any suitable locations for new nodes anymore
 
-        return [getRandomCoordinate(), getRandomCoordinate(), 0]
+        return [getRandomCoordinate(), getRandomCoordinate(), 1]
     }
 
     const getRandomCoordinate = () => {
