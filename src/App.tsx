@@ -12,9 +12,12 @@ const canvasCamera: Position = { position: [0, 0, 400] }
 
 const mapPosition: Position = { position: [0, 0, 0] }
 
-function App() {
+const App = () => {
+    
+
     return (
         <div className="App">
+
             <Canvas className="Canvas" camera={canvasCamera}>
                 <Suspense fallback={null}>
                     <ambientLight />
