@@ -23,6 +23,13 @@ const mapPosition: Position = { position: [0, 0, 1] }
 const App = () => {
     const nodeOnHover = useAppSelector(selectNodeHUDOnHover)
 
+    const camRef = useRef<THREE.PerspectiveCamera>(null!)
+
+    const zoomChange = () => {
+        // logs the camera's x, y, and z when zooming in or out via OrbitControls
+        console.log('cam position: ', camRef && camRef.current ? camRef.current.position : undefined);
+    }
+
     return (
         <div className="App">
 
@@ -30,6 +37,7 @@ const App = () => {
                 <Provider store={store}>
                     <Suspense fallback={null}>
                         <PerspectiveCamera
+                            ref={camRef}
                             makeDefault
                             aspect={1920 / 1080}
                             fov={45}
@@ -38,6 +46,8 @@ const App = () => {
                             onUpdate={self => self.updateProjectionMatrix()}
                         />
                         <OrbitControls
+                            enableRotate={false}
+                            onChange={() => zoomChange()}
                         />
                         <ambientLight />
                         <pointLight position={[10, 10, 10]} />
