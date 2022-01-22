@@ -25,9 +25,24 @@ const App = () => {
 
     const camRef = useRef<THREE.PerspectiveCamera>(null!)
 
+    const getVisibleHeight = () => {
+        const cameraOffset = camRef.current.position.z
+        
+        const vFOV = camRef.current.fov * Math.PI / 180
+
+        return 2 * Math.tan(vFOV / 2) * Math.abs(cameraOffset)
+    }
+
+    const getVisibleWidth = () => {
+        const height = getVisibleHeight()
+        return height * camRef.current.aspect
+    }
+
     const zoomChange = () => {
         // logs the camera's x, y, and z when zooming in or out via OrbitControls
         console.log('cam position: ', camRef && camRef.current ? camRef.current.position : undefined);
+        console.log('visibleHeight: ', getVisibleHeight());
+        console.log('visibleWidth: ', getVisibleWidth());
     }
 
     return (
