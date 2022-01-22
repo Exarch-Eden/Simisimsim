@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react'
 import { Vector3 } from '@react-three/fiber'
 
 import Node from './Node'
-import { MAP_DIMENSIONS, MAX_NODES, MIN_NODES } from '../constants/map'
+import { MAP_HEIGHT, MAP_WIDTH, MAX_NODES, MIN_NODES } from '../constants/map'
 
 import '../css/Map.css'
 import '../css/Sector.css'
@@ -10,6 +10,8 @@ import { MeshProps, Position, Vector3Arr } from '../types/generic'
 import { NodeData } from '../types/node'
 
 interface MapProps extends MeshProps {}
+
+type CoordType = 'x' | 'y' | 'z'
 
 const Map: FC<MapProps> = ({ rest }) => {
     const mesh = useRef<THREE.Mesh>(null!)
@@ -60,13 +62,26 @@ const Map: FC<MapProps> = ({ rest }) => {
         // TODO: also implement check to kill node generation loop if it cannot find
         // any suitable locations for new nodes anymore
 
-        return [getRandomCoordinate(), getRandomCoordinate(), 1]
+        return [getRandomCoordinate('x'), getRandomCoordinate('y'), 1]
     }
 
-    const getRandomCoordinate = () => {
+    const getRandomCoordinate = (coordType: CoordType) => {
         const isPositive = Math.round(Math.random())
         
-        return Math.random() * (MAP_DIMENSIONS + 1) * (isPositive ? 1 : -1);
+        let coordRange = 1
+        switch (coordType) {
+            case 'x':
+                coordRange = MAP_WIDTH
+                break
+            case 'y':
+                coordRange = MAP_HEIGHT
+                break
+        }
+
+        console.log(`coordRange (${coordType}): `, coordRange);
+        
+
+        return Math.random() * (coordRange + 1) * (isPositive ? 1 : -1);
     }
 
     useEffect(() => {

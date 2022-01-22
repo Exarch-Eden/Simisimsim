@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useRef } from 'react';
 import { Provider } from 'react-redux';
 import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber';
@@ -10,8 +10,10 @@ import { useAppSelector } from './redux/hooks';
 import { selectNodeHUDOnHover } from './redux/reducers/nodeHUDSlice';
 
 import './css/App.css';
-import { Html } from '@react-three/drei';
+import { Html, OrbitControls } from '@react-three/drei';
 import GenericRect from './components/GenericRect';
+import { MAP_HEIGHT, MAP_WIDTH } from './constants/map';
+import { PerspectiveCamera } from '@react-three/drei';
 
 // the z value is important in scaling the size of objects inside the canvas
 const canvasCamera: Position = { position: [0, 0, 400] }
@@ -24,14 +26,23 @@ const App = () => {
     return (
         <div className="App">
 
-            <Canvas className="Canvas" camera={canvasCamera}>
+            <Canvas className="Canvas">
                 <Provider store={store}>
                     <Suspense fallback={null}>
-
+                        <PerspectiveCamera
+                            makeDefault
+                            aspect={1920 / 1080}
+                            fov={45}
+                            position={[0, 0, 400]}
+                            zoom={0.5}
+                            onUpdate={self => self.updateProjectionMatrix()}
+                        />
+                        <OrbitControls
+                        />
                         <ambientLight />
                         <pointLight position={[10, 10, 10]} />
                         {/* <group position={[0, 0, 0]}> */}
-                            {/* <Html fullscreen occlude center>
+                        {/* <Html fullscreen occlude center>
                                 {
                                     nodeOnHover
                                         ?
@@ -47,15 +58,15 @@ const App = () => {
                                         : null
                                 }
                             </Html> */}
-                            {
-                                nodeOnHover
+                        {
+                            nodeOnHover
                                 ?
-                                <GenericRect rest={{position: [0, 0, 0]}} />
+                                <GenericRect rest={{ position: [0, 0, 0] }} />
                                 : null
-                            }
+                        }
                         {/* </group> */}
                         <Map rest={mapPosition} />
-                        
+
                     </Suspense>
                 </Provider>
             </Canvas>
