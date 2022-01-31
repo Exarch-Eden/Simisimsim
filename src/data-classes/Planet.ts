@@ -3,17 +3,24 @@ type PlanetSize = 'Small' | 'Medium' | 'Large'
 type PlanetType = 'Arctic' | 'Terra' | 'Steppes'
 
 class Planet {
-    size: PlanetSize
-    name: string
-    type: PlanetType
-    populationSlots: number
+    private _size: PlanetSize
+    private _name: string
+    private _type: PlanetType
+    private _populationSlots: number
 
     constructor(size: PlanetSize, name: string, type: PlanetType) {
-        this.size = size
-        this.name = name
-        this.type = type
+        this._size = size
+        this._name = name
+        this._type = type
 
         // TODO: create a private static function to do all this calculation
+
+        this._populationSlots = Planet.calcPopulationSlots(size, type)
+    }
+
+    private static calcPopulationSlots (size: PlanetSize, type: PlanetType) {
+        console.log('calcPopulationSlots()');
+        
         let populationSlots = 0
 
         switch (size) {
@@ -40,7 +47,7 @@ class Planet {
         console.log('planet type: ', type);
         console.log('population affected by type: ', populationSlots);
 
-        this.populationSlots = populationSlots
+        return populationSlots
     }
 }
 
