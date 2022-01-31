@@ -1,13 +1,29 @@
 
 class Vector3 {
-    x: number
-    y: number
-    z: number
+    private _x: number
+    private _y: number
+    private _z: number
 
     constructor(x: number, y: number, z?: number) {
-        this.x = x
-        this.y = y
-        this.z = z || 0
+        this._x = x
+        this._y = y
+        this._z = z || 0
+    }
+
+    public get x () {
+        return this._x
+    }
+
+    public get y () {
+        return this._y
+    }
+    
+    public get z () {
+        return this._z
+    }
+
+    public toString () {
+        return `Vector3 [x: ${this.x}, y: ${this.y}, z: ${this.z}]`
     }
 }
 
