@@ -12,9 +12,7 @@ class Planet {
         this._size = size
         this._name = name
         this._type = type
-
-        // TODO: create a private static function to do all this calculation
-
+        
         this._populationSlots = Planet.calcPopulationSlots(size, type)
     }
 
