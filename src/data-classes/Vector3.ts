@@ -10,6 +10,27 @@ class Vector3 {
         this._z = z || 0
     }
 
+    public move (moveRate: Vector3) {
+        // console.log('vector3 move()');
+        
+        const { x, y, z } = moveRate
+        this._x += x
+        this._y += y
+        this._z += z || 0
+    }
+
+    public set x (x) {
+        this._x = x
+    }
+
+    public set y (y) {
+        this._y = y
+    }
+    
+    public set z (z) {
+        this._z = z
+    }
+
     public get x () {
         return this._x
     }
